@@ -1,0 +1,117 @@
+#region VEXcode Generated Robot Configuration
+from vex import *
+import urandom
+
+# Brain should be defined by default
+brain=Brain()
+
+# Robot configuration code
+
+
+# wait for rotation sensor to fully initialize
+wait(30, MSEC)
+#endregion VEXcode Generated Robot Configuration
+
+# Brain and Timer initialization
+brain = Brain()
+timer1 = Timer()
+timer2 = Timer()
+
+brain.screen.print("KILLER BEES")
+
+# 	Project:      Buzz 28.5 Robot Code
+#	Author:       Ethan Dhomnic
+#	Created:      10/11/23
+#	Description:  VEXcode V5 Python Project for the 2023 OCCRA competition
+
+# Library imports
+from vex import *
+
+
+# Robot configuration code
+expander_1 = Triport(Ports.PORT1)
+controller_1 = Controller(PRIMARY)
+controller_2 = Controller(PARTNER)
+driveLF = Motor29(brain.three_wire_port.a, False)
+driveLR = Motor29(brain.three_wire_port.b, False)
+driveRF = Motor29(brain.three_wire_port.c, True)
+driveRR = Motor29(brain.three_wire_port.d, True)
+shooter_1 = Motor29(brain.three_wire_port.g, True) 
+shooter_2 = Motor29(brain.three_wire_port.f, True)
+shooter_3 = Motor29(brain.three_wire_port.e, True)
+
+controller_1.screen.print("KILL COUNT: 5")
+
+
+# Shooter velocity and motor directional controls w/ motor delay
+while (True):
+
+   # EMERGENCY STALL RELIEF INTAKING
+    if (controller_1.buttonX.pressing() and controller_1.buttonL2.pressing()):
+        shooter_1.set_velocity(70, PERCENT)
+        shooter_2.set_velocity(80, PERCENT)
+        shooter_3.set_velocity(80, PERCENT)
+        shooter_1.spin(FORWARD)
+        shooter_2.spin(FORWARD)
+        shooter_3.spin(REVERSE)
+    
+   # Intaking 
+    elif controller_1.buttonL2.pressing():
+        shooter_1.set_velocity(30, PERCENT)
+        shooter_2.set_velocity(40, PERCENT)
+        shooter_3.set_velocity(40, PERCENT)
+        shooter_1.spin(FORWARD)
+        shooter_2.spin(FORWARD)
+        if timer1.time() >= 100:
+            shooter_3.spin(REVERSE)
+    
+   # Shooting
+    elif controller_1.buttonR2.pressing():
+        shooter_1.set_velocity(100, PERCENT)
+        shooter_2.set_velocity(100, PERCENT)
+        shooter_3.set_velocity(50, PERCENT)
+        shooter_1.spin(REVERSE)
+        shooter_2.spin(REVERSE)
+        shooter_3.spin(FORWARD)
+    
+    else:
+        if timer2.time() >= 100:
+            shooter_3.stop()
+            shooter_1.set_velocity(15, PERCENT)
+            shooter_1.spin(REVERSE)
+            shooter_2.set_velocity(15, PERCENT)
+            shooter_2.spin(REVERSE)
+    
+    # For drive controls w/ slow mode
+    steer = controller_1.axis1.position()
+    if(steer > 55):
+        steer = 55
+    left = controller_1.axis3.position() + steer
+    right = controller_1.axis3.position() - steer
+    
+    # Defining variable for slow mode velocity adjustment
+    if controller_1.buttonR1.pressing():
+        slow_adjustment = 0.6
+
+    else:
+        slow_adjustment = 1   
+    
+    driveLF.set_velocity(round(left * slow_adjustment), PERCENT)
+    driveLR.set_velocity(round(left * slow_adjustment), PERCENT)
+    driveRF.set_velocity(round(right * slow_adjustment), PERCENT)
+    driveRR.set_velocity(round(right * slow_adjustment), PERCENT)
+    driveLF.spin(FORWARD)
+    driveLR.spin(FORWARD)
+    driveRF.spin(FORWARD)
+    driveRR.spin(FORWARD)
+    
+
+  
+    
+        
+    
+    
+        
+
+
+    

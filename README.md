@@ -1,0 +1,1 @@
+Killer Bees team 33 robot code (Buzz 28.5) for the 2023 OCCRA Competition. Written in Python and developed in VEXCode V5 and run on a VEX Brain with attached peripherals (Victor SP motor controllers used to control CIM and 775pro motors).
